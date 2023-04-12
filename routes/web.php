@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Groups;
 use App\Http\Controllers\Products;
+use App\Http\Controllers\Catalog\Products as cProducts;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,8 +30,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware('auth')->group(function () {
+Route::prefix("catalog")->group(function () {
+    Route::get('/products', [cProducts::class, 'index']);
+});
+
+Route::prefix("admin")->middleware('auth')->group(function () {
 //    Route::resource('products', Products::class);
+//    Route::resource('groups', Groups::class);
+
+    Route::get('/', function (){
+        return view('admin.catalog.home');
+    })->name('admin.home');
 
     Route::get('/products', [Products::class, 'index'])->name('products.index');
     Route::get('/products/create', [Products::class, 'create'])->name('products.create');

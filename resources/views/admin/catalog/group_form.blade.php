@@ -1,4 +1,4 @@
-@extends('catalog.layout')
+@extends('admin.catalog.layout')
 @section('title', old('name', $name ?? 'Новая группа'))
 
 @section('content')

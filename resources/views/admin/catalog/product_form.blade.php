@@ -1,10 +1,10 @@
-@extends('catalog.layout')
+@extends('admin.catalog.layout')
 @section('title', $name??'Новый товар')
 
 @section('content')
     <div class="row">
         <h2>{{old('name', $name ?? 'Новый товар')}}</h2>
-        <form class="col-md-6" method="POST" action="{{$action}}" enctype="multipart/form-data">>
+        <form class="col-md-6" method="POST" action="{{$action}}" enctype="multipart/form-data">
             {{--            @if(!$is_new)--}}
             {{--                @method('PUT')--}}
             {{--            @endif--}}
@@ -90,7 +90,11 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <img src="{{ $root ?? '' }}{{ is_null(old('image', $image)) ? 'noimage.jpg':$image }}" width="640px">
+                        @if($is_new)
+                            <img src="{{ $root ?? '' }}{{ old('image', '/images/noimage.jpg') }}" width="640px">
+                        @else
+                            <img src="{{ $root ?? '' }}{{ is_null(old('image', $image)) ? 'noimage.jpg':$image }}" width="640px">
+                        @endif
                         <input type="file" name="image" class="form-control mt-3">
                     </div>
                 </div>

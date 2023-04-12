@@ -21,7 +21,7 @@ class Groups extends Controller
      */
     public function index()
     {
-        return view('catalog.groups_list', [
+        return view('admin.catalog.groups_list', [
             'groups' => Group::orderBy('active', 'desc')
                 ->orderBy('sort', 'asc')
                 ->get()
@@ -38,7 +38,7 @@ class Groups extends Controller
         $data = [];
         $data['action'] = route('groups.store');
         $data['is_new'] = true;
-        return view('catalog.group_form', $data);
+        return view('admin.catalog.group_form', $data);
     }
 
     /**
@@ -104,7 +104,7 @@ class Groups extends Controller
         $data = $entry->toArray();
         $data['action'] = route('groups.update', $id);
         $data['is_new'] = false;
-        return view('catalog.group_form', $data);
+        return view('admin.catalog.group_form', $data);
     }
 
     /**

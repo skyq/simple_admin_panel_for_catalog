@@ -11,6 +11,7 @@
     <title>@yield('title')</title>
 </head>
 <body class="d-flex flex-column h-100">
+@include('admin.catalog.header')
 
 <div class="container-fluid">
     @yield('content')

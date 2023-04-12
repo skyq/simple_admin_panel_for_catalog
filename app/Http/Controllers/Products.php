@@ -36,7 +36,7 @@ class Products extends Controller
                 'g.name as group'
             ])
             ->get();
-        return view('catalog.products_list',
+        return view('admin.catalog.products_list',
             ['products' => $products]);
     }
 
@@ -52,7 +52,7 @@ class Products extends Controller
         $data['groups'] = Group::where('active', 1)->get();
         $data['group'] = 0;
         $data['is_new'] = true;
-        return view('catalog.product_form', $data);
+        return view('admin.catalog.product_form', $data);
     }
 
     /**
@@ -79,7 +79,10 @@ class Products extends Controller
             $data = $request->all();
             $data['slug'] = Str::slug($request->get('name'));
             $data['price'] = $data['price'] ?: 0;
+            $data['active'] = !is_null($request->get('active'));
+
             $entry = Product::create($data);
+            $this->update_image($entry, $request);
             return Redirect::route('products.edit', $entry->id);
         } catch (\Exception $e) {
             return Redirect::route('products.create')
@@ -118,7 +121,7 @@ class Products extends Controller
         $data['group'] = $this->get_product_group($id);
         $data['is_new'] = false;
         $data['root'] = env('ROOT');
-        return view('catalog.product_form', $data);
+        return view('admin.catalog.product_form', $data);
     }
 
     /**
@@ -157,15 +160,7 @@ class Products extends Controller
             $entry->save();
             $this->update_product_in_group($id, $request->get('group'));
 
-            $validator = Validator::make($request->all(), [
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ]);
-
-            if (!$validator->fails()){
-                $request->image->move(public_path('images'), $request->image->getClientOriginalName());
-                $entry->image = '/images/'.$request->image->getClientOriginalName();
-                $entry->save();
-            }
+            $this->update_image($entry, $request);
 
             return Redirect::route('products.edit', $id);
         } catch (\Exception $e) {
@@ -204,4 +199,16 @@ class Products extends Controller
         $entry->save();
     }
 
+    private function update_image(Product $entry, Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if (!$validator->fails()){
+            $request->image->move(public_path('images'), $request->image->getClientOriginalName());
+            $entry->image = '/images/'.$request->image->getClientOriginalName();
+            $entry->save();
+        }
+    }
 }
