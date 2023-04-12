@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru" data-bs-theme="dark">
+<html lang="ru" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -7,14 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
-
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <title>@yield('title')</title>
 </head>
-<body class="d-flex flex-column h-100">
+<body>
 
-<div class="container-fluid">
+<section class="container">
     @yield('content')
-</div>
+</section>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 

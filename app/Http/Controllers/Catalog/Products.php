@@ -16,12 +16,12 @@ class Products extends Controller
         $products = DB::table(with(new Product)->getTable() . ' as p')
             ->leftJoin(with(new ProductsInGroups())->getTable() . ' as pg', 'pg.product_id', '=', 'p.id')
             ->leftJoin(with(new Group())->getTable() . ' as g', 'pg.group_id', '=', 'g.id')
-            ->orderBy('active', 'desc')
             ->orderBy('sort', 'asc')
             ->select([
                 'p.*',
                 'g.name as group'
             ])
+            ->where('p.active',1)
             ->get();
         return view('catalog.products_list',
             ['products' => $products]);
