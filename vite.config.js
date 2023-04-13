@@ -7,6 +7,8 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
+                'resources/tables_orders/dist/js/app.js',
+                'resources/tables_orders/dist/js/chunk-vendors.js',
             ],
             refresh: true,
         }),
