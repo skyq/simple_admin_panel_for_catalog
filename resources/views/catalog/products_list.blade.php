@@ -3,6 +3,10 @@
 
 @section('style')
     <style>
+        .bs{
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
+            z-index: 2;
+        }
         .breadcrumbs-wrapper {
             overflow: hidden;
         }
@@ -18,16 +22,26 @@
         }
 
         .item {
-            margin-right: 12px;
             white-space: nowrap;
             font-size: 18px;
-            line-height:24px;
+            line-height: 24px;
+
+            margin: 4px;
+            height: 32px;
+            background: rgb(243, 243, 247);
+            color: rgb(92, 99, 112);
+            font-weight: 500;
+            line-height: 38px;
+            padding: 0px 16px;
+            border-radius: 16px;
+            flex: 0 0 auto;
+            text-decoration: none;
         }
     </style>
 @endsection
 
 @section('navbar')
-    <div class="container pt-3">
+    <div class="container pt-3 pb-3 position-fixed bg-light bs">
         <div class="body">
             <div class="breadcrumbs-wrapper">
                 <div class="nw-breadcrumbs">
@@ -43,27 +57,58 @@
 @endsection
 
 @section('content')
-    <div class="row d-flex justify-center align-middle mt-4">
-        @php
-            $cur_group = 0;
-        @endphp
+    <section class="container" style="padding-top: 100px; z-index: 1;">
+
         @foreach($list as $el)
             <h3 id="{{$el['group_slug']}}">{{$el['group_name']}}</h3>
             @foreach($el['products'] as $product)
-            <div class="col-sm-3 ">
-                <div class="card mb-3 w-100 overflow-hidden rounded">
-                    <div class="d-flex justify-content-center" style="height: 320px">
-                        <img src="{{env('ROOT')}}{{$product->image}}" class="h-100 mw-100" alt="...">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">{{$product->name}} {{$product->price}} руб.</h5>
-                        @isset($product->description)
-                            {!!  $product->description !!}
-                        @endisset
-                        <a href="#" class="btn btn-outline-secondary">Хочу</a>
+                <div class="row">
+                    <div class="col-12 pb-5 pt-4 pr-2 pl-2">
+                        <div class="row">
+                            <div class="col-12">
+                                <img src="{{env('ROOT')}}{{$product->image}}" class="mw-100" alt=""
+                                     style="object-fit: contain;">
+                            </div>
+                            <div class="col-12 pt-2">
+                                <h4 class="card-title">{{$product->name}}</h4>
+                                @isset($product->description)
+                                    {!!  $product->description !!}
+                                @endisset
+                                <div class="fw-bold fs-2 mt-4 col-3 rounded-pill text-center" style="background-color: rgb(255, 240, 230);">
+                                    {{$product->price}} ₽
+                                </div>
+
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-            </div>
+                <hr>
+            @endforeach
+        @endforeach
+    </section>
+@endsection
+
+@section('content')
+    <div class="row d-flex justify-center align-middle mt-4">
+        @foreach($list as $el)
+            <h3 id="{{$el['group_slug']}}">{{$el['group_name']}}</h3>
+            @foreach($el['products'] as $product)
+                <div class="col-sm-3 ">
+                    <div class="card mb-3 w-100 overflow-hidden rounded">
+                        <div class="d-flex justify-content-center" style="height: 320px">
+                            <img src="{{env('ROOT')}}{{$product->image}}" class="h-100 mw-100" alt=""
+                                 style="object-fit: contain;">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{$product->name}} {{$product->price}} руб.</h5>
+                            @isset($product->description)
+                                {!!  $product->description !!}
+                            @endisset
+                            <a href="#" class="btn btn-outline-secondary">Хочу</a>
+                        </div>
+                    </div>
+                </div>
             @endforeach
         @endforeach
     </div>
