@@ -21,7 +21,7 @@ export default {
         this.get_tables()
     },
     updated() {
-        setTimeout(() => this.get_tables(), 30000);
+        setTimeout(() => this.get_tables(), 10000);
     },
     methods: {
         get_tables(){

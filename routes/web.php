@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix("catalog")->group(function () {
-    Route::get('/products', [cProducts::class, 'index']);
+    Route::get('/products/{table}', [cProducts::class, 'index']);
 });
 
 Route::prefix("admin")->middleware('auth')->group(function () {

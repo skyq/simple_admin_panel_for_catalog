@@ -20,4 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::post('table_orders', [TableOrders::class, 'store'])->name('table_order_create');
-Route::get('table_orders', [TableOrders::class, 'index'])->name('table_order_index');
+Route::get('table_orders', [TableOrders::class, 'index'])->middleware('throttle:7,1')->name('table_order_index');

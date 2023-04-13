@@ -3,10 +3,11 @@
 
 @section('style')
     <style>
-        .bs{
+        .bs {
             box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
             z-index: 2;
         }
+
         .breadcrumbs-wrapper {
             overflow: hidden;
         }
@@ -74,9 +75,20 @@
                                 @isset($product->description)
                                     {!!  $product->description !!}
                                 @endisset
-                                <div class="fw-bold fs-2 mt-4 col-3 rounded-pill text-center" style="background-color: rgb(255, 240, 230);">
-                                    {{$product->price}} ₽
-                                </div>
+                                @if($product->price == 0)
+                                    <div class="fw-bold fs-2 mt-4 col-3 rounded-pill text-center"
+                                         style="background-color: rgb(255, 240, 230);"
+                                         onclick="create_order({{$product->id}})">
+                                        Бесценно
+                                    </div>
+                                @else
+                                    <div class="fw-bold fs-2 mt-4 col-3 rounded-pill text-center"
+                                         style="background-color: rgb(255, 240, 230);"
+                                         onclick="create_order({{$product->id}})">
+                                        {{$product->price}} ₽
+                                    </div>
+                                @endif
+
 
                             </div>
 
@@ -87,6 +99,21 @@
             @endforeach
         @endforeach
     </section>
+    <script>
+        async function create_order(id) {
+            let data = {
+                table: {{$table}},
+                product_id: id
+            };
+            let response = await fetch('https://proxy.profpotok.ru/test/api/table_orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(data)
+            })
+        }
+    </script>
 @endsection
 
 @section('content')

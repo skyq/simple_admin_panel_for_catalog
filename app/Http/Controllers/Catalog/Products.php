@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class Products extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, $table)
     {
         $products = DB::table(with(new Product)->getTable() . ' as p')
             ->leftJoin(with(new ProductsInGroups())->getTable() . ' as pg', 'pg.product_id', '=', 'p.id')
@@ -53,7 +53,8 @@ class Products extends Controller
 
         return view('catalog.products_list',
             [
-                'list' => $list
+                'list' => $list,
+                'table' => $table
             ]);
     }
 }
