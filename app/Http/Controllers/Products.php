@@ -17,6 +17,7 @@ class Products extends Controller
     protected $messages = [
         'name.required' => 'Наименование обязательно к заполнению',
         'sluh.required' => 'Имя для url обязательно к заполнению',
+        'image.max' => 'Слишком большое фото',
     ];
 
     /**
@@ -52,6 +53,7 @@ class Products extends Controller
         $data['groups'] = Group::where('active', 1)->get();
         $data['group'] = 0;
         $data['is_new'] = true;
+        $data['root'] = env('ROOT');
         return view('admin.catalog.product_form', $data);
     }
 
@@ -82,13 +84,22 @@ class Products extends Controller
             $data['active'] = !is_null($request->get('active'));
 
             $entry = Product::create($data);
-            $this->update_image($entry, $request);
-            return Redirect::route('products.edit', $entry->id);
+            $this->update_product_in_group($entry->id, $request->get('group'));
         } catch (\Exception $e) {
             return Redirect::route('products.create')
                 ->withInput()
                 ->withErrors(['update' => $e->getMessage()]);
         }
+
+        $error = "";
+
+        if (!$this->update_image($entry, $request, $error)){
+            return Redirect::route('products.edit', $entry->id)
+                ->withInput()
+                ->withErrors(['update' => $error]);
+        }
+
+        return Redirect::route('products.edit', $entry->id);
     }
 
     /**
@@ -159,15 +170,21 @@ class Products extends Controller
         try {
             $entry->save();
             $this->update_product_in_group($id, $request->get('group'));
-
-            $this->update_image($entry, $request);
-
-            return Redirect::route('products.edit', $id);
         } catch (\Exception $e) {
             return Redirect::route('products.edit', $id)
                 ->withInput()
                 ->withErrors(['update' => $e->getMessage()]);
         }
+
+        $error = "";
+
+        if (!$this->update_image($entry, $request, $error)){
+            return Redirect::route('products.edit', $entry->id)
+                ->withInput()
+                ->withErrors(['update' => $error]);
+        }
+
+        return Redirect::route('products.edit', $entry->id);
     }
 
     /**
@@ -199,16 +216,27 @@ class Products extends Controller
         $entry->save();
     }
 
-    private function update_image(Product $entry, Request $request)
+    private function update_image(Product $entry, Request $request, &$error = "")
     {
         $validator = Validator::make($request->all(), [
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required',
         ]);
+
+        if ($validator->fails()){
+            return true;
+        }
+
+        $validator = Validator::make($request->all(), [
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ], $this->messages);
 
         if (!$validator->fails()){
             $request->image->move(public_path('images'), $request->image->getClientOriginalName());
             $entry->image = '/images/'.$request->image->getClientOriginalName();
             $entry->save();
+            return true;
         }
+        $error = $validator->messages();
+        return false;
     }
 }
