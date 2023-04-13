@@ -79,7 +79,7 @@
                                     <div class="fw-bold fs-2 mt-4 col-3 rounded-pill text-center"
                                          style="background-color: rgb(255, 240, 230);"
                                          onclick="create_order({{$product->id}})">
-                                        Бесценно
+                                        ∞
                                     </div>
                                 @else
                                     <div class="fw-bold fs-2 mt-4 col-3 rounded-pill text-center"
