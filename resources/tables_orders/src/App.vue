@@ -1,6 +1,14 @@
 <template>
-    <ul>
-        <li v-for="order in orders" :key="order.id">{{dateTime(order.updated_at)}} Стол {{order.table}} хотят {{order.name}}</li>
+    <ul class="list-group list-group-flush ">
+        <li class="alert alert-dark" v-if="!this.orders.length">
+            Пока ничего нет
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center"
+            v-for="order in orders" :key="order.id">
+            <span class="fs-2">{{ dateTime(order.updated_at) }}</span>
+            {{ order.name }}
+            <span class="badge bg-secondary rounded-pill">{{ order.table }}</span>
+        </li>
     </ul>
 </template>
 
@@ -12,7 +20,7 @@ import moment from 'moment';
 export default {
     name: 'App',
     components: {},
-    data(){
+    data() {
         return {
             orders: []
         }
@@ -24,13 +32,13 @@ export default {
         setTimeout(() => this.get_tables(), 10000);
     },
     methods: {
-        get_tables(){
+        get_tables() {
             axios.get('https://proxy.profpotok.ru/test/api/table_orders')
                 .then((r) => {
                     this.orders = r.data
                 })
         },
-        dateTime(v){
+        dateTime(v) {
             return moment(v).format('HH:mm');
         }
     },
