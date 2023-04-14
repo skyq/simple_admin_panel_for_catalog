@@ -68,7 +68,7 @@ class Groups extends Controller
                 "sort" => $request->get('sort') ?: 999,
                 "active" => !is_null($request->get('active')),
             ]);
-            return Redirect::route('groups.edit', $entry->id);
+            return Redirect::route('groups.edit', $entry->id)->with(['success'=>true]);
         } catch (\Exception $e) {
             return Redirect::route('groups.create')
                 ->withInput()
@@ -145,7 +145,7 @@ class Groups extends Controller
 
         try {
             $entry->save();
-            return Redirect::route('groups.edit', $id);
+            return Redirect::route('groups.edit', $id)->with(['success'=>true]);
         } catch (\Exception $e) {
             return Redirect::route('groups.edit', $id)
                 ->withInput()

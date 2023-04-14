@@ -6,6 +6,11 @@
     <div class="row">
         <h2>{{old('name', $name ?? 'Новая группа')}}</h2>
         <form class="col-md-6" method="POST" action="{{$action}}">
+            @if(session('success') ?? 0)
+                <div class="col-md-12 alert alert-success" role="alert">
+                    Успешно!
+                </div>
+            @endif
 {{--            @if(!$is_new)--}}
 {{--                @method('PUT')--}}
 {{--            @endif--}}
@@ -17,6 +22,9 @@
             @enderror
 
             @csrf
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-3">Сохранить</button>
+                </div>
             <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" role="switch" id="active"
                        name="active" {{(old('active', $active ?? 0)) ? 'checked' : ''}}>
@@ -47,9 +55,7 @@
                 <input type="number" class="form-control" id="sort" name="sort" placeholder="Сортировка"
                        value="{{old('sort', $sort ?? 0)}}">
             </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary mb-3">Сохранить</button>
-            </div>
+
         </form>
     </div>
     {{--    {{ dd(get_defined_vars()) }}--}}

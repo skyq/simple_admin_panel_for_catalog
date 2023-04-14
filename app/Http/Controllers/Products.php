@@ -99,7 +99,7 @@ class Products extends Controller
                 ->withErrors(['update' => $error]);
         }
 
-        return Redirect::route('products.edit', $entry->id);
+        return Redirect::route('products.edit', $entry->id)->with(['success'=>true]);
     }
 
     /**
@@ -184,7 +184,7 @@ class Products extends Controller
                 ->withErrors(['update' => $error]);
         }
 
-        return Redirect::route('products.edit', $entry->id);
+        return Redirect::route('products.edit', $entry->id)->with(['success'=>true]);
     }
 
     /**

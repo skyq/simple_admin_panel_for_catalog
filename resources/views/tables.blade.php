@@ -9,6 +9,7 @@
     <title>Заявки</title>
 </head>
 <body>
+@include('admin.catalog.header')
 <div id="app" class="container mt-4"></div>
 @vite(['resources/tables_orders/dist/js/app.js','resources/tables_orders/dist/js/chunk-vendors.js'])
 </body>

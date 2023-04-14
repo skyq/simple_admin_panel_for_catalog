@@ -5,7 +5,7 @@
     <div class="row">
         <h2>Группы</h2>
 
-        <div class="table-responsive col-md-6">
+        <div class="table-responsive col-md-8">
             <table class="table table-striped table-sm">
                 <thead>
                 <tr>

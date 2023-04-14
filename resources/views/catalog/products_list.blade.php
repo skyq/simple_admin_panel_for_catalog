@@ -76,15 +76,16 @@
                                     {!!  $product->description !!}
                                 @endisset
                                 @if($product->price == 0)
-                                    <div class="fw-bold fs-2 mt-4 col-3 rounded-pill text-center"
+
+                                    <div class="fw-bold fs-2 mt-4 col-4 rounded-pill text-center"
                                          style="background-color: rgb(255, 240, 230);"
-                                         onclick="create_order({{$product->id}})">
+                                         onclick="create_order({{$product->id}}, this)">
                                         ∞
                                     </div>
                                 @else
-                                    <div class="fw-bold fs-2 mt-4 col-3 rounded-pill text-center"
+                                    <div class="fw-bold fs-2 mt-4 col-4 rounded-pill text-center"
                                          style="background-color: rgb(255, 240, 230);"
-                                         onclick="create_order({{$product->id}})">
+                                         onclick="create_order({{$product->id}}, this)">
                                         {{$product->price}} ₽
                                     </div>
                                 @endif
@@ -100,7 +101,15 @@
         @endforeach
     </section>
     <script>
-        async function create_order(id) {
+        function add_alert(e){
+            let alert = document.createElement('div');
+            alert.setAttribute('class', "alert alert-success mt-2 col-8")
+            alert.textContent = "Принято!";
+            e.after(alert)
+        }
+        async function create_order(id, e) {
+            add_alert(e)
+
             let data = {
                 table: {{$table}},
                 product_id: id

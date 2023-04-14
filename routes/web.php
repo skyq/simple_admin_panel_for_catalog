@@ -18,7 +18,7 @@ use App\Http\Controllers\Catalog\Products as cProducts;
 
 Route::get('/tables', function () {
     return view('tables');
-});
+})->name('tables');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

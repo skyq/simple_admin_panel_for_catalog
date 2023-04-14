@@ -3,11 +3,12 @@
 
 @section('content')
     <div class="row">
-        <h2>{{old('name', $name ?? 'Новый товар')}}</h2>
-        <form class="col-md-6" method="POST" action="{{$action}}" enctype="multipart/form-data">
+        <form class="col-md-12" method="POST" action="{{$action}}" enctype="multipart/form-data">
             {{--            @if(!$is_new)--}}
             {{--                @method('PUT')--}}
             {{--            @endif--}}
+
+
 
             @error('update')
             <div class="alert alert-danger mt-1" role="alert">
@@ -18,7 +19,20 @@
             @csrf
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-6">
+                    @if(session('success') ?? 0)
+                        <div class="col-md-12 alert alert-success" role="alert">
+                            Успешно!
+                        </div>
+                    @endif
+                    <div class="col-md-12">
+                        <h2>{{old('name', $name ?? 'Новый товар')}}</h2>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary mb-3">Сохранить</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" role="switch" id="active"
                                    name="active" {{(old('active', $active ?? 0)) ? 'checked' : ''}}>
@@ -74,9 +88,20 @@
                         </div>
 
 
+                    </div>
+                    <div class="col-md-6">
+                        @if($is_new)
+                            <img src="{{ $root ?? '' }}{{ old('image', '/images/noimage.jpg') }}" class="w-100">
+                        @else
+                            <img src="{{ $root ?? '' }}{{ is_null(old('image', $image)) ? 'noimage.jpg':$image }}"
+                                 class="w-100">
+                        @endif
+                        <input type="file" name="image" class="form-control mt-3">
+                    </div>
+                    <div class="col-md-12">
                         <div class="mb-3">
                             <label for="description" class="form-label">Описание:</label>
-                            <textarea type="text" class="form-control" id="description" name="description"
+                            <textarea rows=10 type="text" class="form-control" id="description" name="description"
                                       placeholder="Описание">{{old('description', $description ?? '')}}</textarea>
                             @error('description')
                             <div class="alert alert-danger mt-1" role="alert">
@@ -84,18 +109,6 @@
                             </div>
                             @enderror
                         </div>
-
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-primary mb-3">Сохранить</button>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        @if($is_new)
-                            <img src="{{ $root ?? '' }}{{ old('image', '/images/noimage.jpg') }}" width="640px">
-                        @else
-                            <img src="{{ $root ?? '' }}{{ is_null(old('image', $image)) ? 'noimage.jpg':$image }}" width="640px">
-                        @endif
-                        <input type="file" name="image" class="form-control mt-3">
                     </div>
                 </div>
             </div>
