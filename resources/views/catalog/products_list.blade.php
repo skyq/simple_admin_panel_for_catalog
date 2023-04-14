@@ -80,7 +80,7 @@
                                     <div class="fw-bold fs-2 mt-4 col-4 rounded-pill text-center"
                                          style="background-color: rgb(255, 240, 230);"
                                          onclick="create_order({{$product->id}}, this)">
-                                        ∞
+                                        ❤️
                                     </div>
                                 @else
                                     <div class="fw-bold fs-2 mt-4 col-4 rounded-pill text-center"
