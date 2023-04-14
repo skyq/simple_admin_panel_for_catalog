@@ -18,9 +18,10 @@ class TableOrders extends Controller
 
         $data = DB::table(with(new TableOrder())->getTable() . ' as o')
             ->leftJoin(with(new Product())->getTable() . ' as p', 'o.product_id', '=', 'p.id')
-            ->orderBy('o.created_at', 'desc')
+            ->orderBy('o.updated_at', 'desc')
             ->select([
-                'p.id',
+                'o.id',
+                'p.id as product_id',
                 'p.name',
                 'p.image',
                 'p.price',
