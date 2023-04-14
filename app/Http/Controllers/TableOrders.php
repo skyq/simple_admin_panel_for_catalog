@@ -14,9 +14,11 @@ class TableOrders extends Controller
 
     public function index(Request $request)
     {
+        $start = new \DateTime(now());
+
         $data = DB::table(with(new TableOrder())->getTable() . ' as o')
             ->leftJoin(with(new Product())->getTable() . ' as p', 'o.product_id', '=', 'p.id')
-            ->orderBy('o.updated_at', 'desc')
+            ->orderBy('o.created_at', 'desc')
             ->select([
                 'p.id',
                 'p.name',
@@ -25,8 +27,11 @@ class TableOrders extends Controller
                 'o.table',
                 'o.updated_at',
             ])
+            ->where('o.created_at', ">=", $start->format( 'Y-m-d 00:00:00' ))
             ->where('p.active', 1)
+//            ->toSql();
             ->get();
+//        return $data;
         return response()->json($data);
     }
     /**
